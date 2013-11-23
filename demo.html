@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Demo for jBarCode</title>
+  <script type="text/javascript" src="js/excanvas.js"></script>
+  <script type="text/javascript" src="js/qrcode.js"></script>
+  <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+  <script type="text/javascript" src="js/jBarCode.js"></script>
+  <script type="text/javascript" src="plugins/jTestRender.js"></script>
+  <script type="text/javascript" src="plugins/code39.js"></script>
+  <script type="text/javascript" src="plugins/ean.js"></script>
+  <script type="text/javascript" src="plugins/code128.js"></script>
+  <script type="text/javascript" src="plugins/qrcodePlugin.js"></script>
+  <style>
+    #testCodeGrid{
+      border-collapse: collapse;
+      width: 800px;
+      text-align: center;
+    }
+    #testCodeGrid td, #testCodeGrid th{
+      padding: 10px;
+      border: grey 1px solid;
+    }
+  </style>
+</head>
+<body>
+  <h1>Demonstration for jBarCode</h1>
+  <table id="testCodeGrid">
+    <tr>
+      <th>Bar code type</th>
+      <th>Test code</th>
+      <th>Code created</th>
+      <th>Note</th>
+    </tr>
+    <tr>
+      <td>testCode</td>
+      <td>1234567890</td>
+      <td id="test_render"></td>
+      <td>this is a test code generator function</td>
+    </tr>
+    <tr>
+      <td>code39</td>
+      <td>WIKIPEDIA</td>
+      <td id="code39"></td>
+      <td>code 39 generate</td>
+    </tr>
+    <tr>
+      <td>EAN-8</td>
+      <td>96385074</td>
+      <td id="ean8"></td>
+      <td>code EAN-8 generate</td>
+    </tr>
+    <tr>
+      <td>EAN-13</td>
+      <td>5901234123457</td>
+      <td id="ean13"></td>
+      <td>code EAN-13 generate</td>
+    </tr>
+    <tr>
+      <td>UPC</td>
+      <td>123456789999</td>
+      <td id="upc"></td>
+      <td>code UPC generate</td>
+    </tr>
+    <tr>
+      <td>Code128</td>
+      <td>Wikipedia</td>
+      <td class="code128"></td>
+      <td>Code 128 generate</td>
+    </tr>
+    <tr>
+      <td>Code128</td>
+      <td>123Wikipedia</td>
+      <td class="code128"></td>
+      <td>Code 128 generate compress with digit in the front</td>
+    </tr>
+    <tr>
+      <td>Code128</td>
+      <td>1234Wikipedia</td>
+      <td class="code128"></td>
+      <td>Code 128 generate compress width digit in the front</td>
+    </tr>
+    <tr>
+      <td>Code128</td>
+      <td>Wiki1234567pedia</td>
+      <td class="code128"></td>
+      <td>Code 128 generate compress with digit in the middle</td>
+    </tr>
+    <tr>
+      <td>Code128</td>
+      <td>Wiki12345678pedia</td>
+      <td class="code128"></td>
+      <td>Code 128 generate compress width digit in the middle</td>
+    </tr>
+    <tr>
+      <td>Code128</td>
+      <td>Wikipedia123</td>
+      <td class="code128"></td>
+      <td>Code 128 generate compress with digit at the end</td>
+    </tr>
+    <tr>
+      <td>Code128</td>
+      <td>Wikipedia1234</td>
+      <td class="code128"></td>
+      <td>Code 128 generate compress width digit at the end</td>
+    </tr>
+    <tr>
+      <td>QR Code</td>
+      <td>https://github.com/qquach</td>
+      <td id="qrcode"></td>
+      <td>QR code generate</td>
+    </tr>
+  </table>
+  <script type="text/javascript">
+    $("#test_render").jBarCode("1234567890","testCode");
+    $("#code39").jBarCode("WIKIPEDIA","code39");
+    $("#ean8").jBarCode("96385074","ean8");
+    $("#ean13").jBarCode("5901234123457","ean13");
+    $("#upc").jBarCode("123456789999","upc");
+    $(".code128").each(function(i,e){
+      var jObj = $(e);
+      var code = jObj.prev().text();
+      jObj.jBarCode(code,"code128");
+    });
+    $("#qrcode").jBarCode("https://github.com/qquach","qrcode");
+  </script>
+</body>
+</html>
