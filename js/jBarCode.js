@@ -1,5 +1,5 @@
 /**
-* Copyright © Quoc Quach 2013-2014
+* Copyright ï¿½ Quoc Quach 2013-2014
 * Author: Quoc Quach
 * Email: quoc_cooc@yahoo.com
 * Released under the MIT license
@@ -47,10 +47,8 @@
 	//jBarCode.types = barCodeRenders;
 	$.jBarCode = {
 		register: function(render){		
-			console.log("$.jBarCode.register");
 			for(var i = 0; i<render.types.length; i++){
 				var type = render.types[i];
-				console.log("type: %s",type);
 				barCodeRenders[type.toLowerCase()] = render;				
 			}
 			$.extend(jBarCode.prototype,render.prototype);
@@ -59,7 +57,6 @@
 	var jBarCode = function(jObj,options){
 		this.jObj = jObj;
 		this.options = options;
-		console.log("param options: %s",JSON.stringify(this.options));
 		this.init();
 		var width = this.options.codeWidth  + 2*this.options.paddingLeftRight;
 		var height = this.options.barHeight + 2* this.options.paddingTopBottom + (this.options.showCode ? this.options.font + this.options.codePadding : 0 );
@@ -97,7 +94,6 @@
 		 * code is a string of the binary 0 and 1 represent for space for line
 		 */
 		drawCode: function(codeStr,start){			
-			//console.log("codeStr: %s, start: %d", codeStr, start);
 			for(var i = 0; i< codeStr.length; i++,start+=this.options.lineWidth){
 				var code = codeStr.charAt(i);
 				if(code=='0') continue;
@@ -109,7 +105,6 @@
 		 * draw vertical line for each bar with provide where to start and the width of the line.
 		 */
 		drawLine: function(start,width){
-			//console.log("drawLine | start: %d, width: %d", start, width);
 			var top = this.options.paddingTopBottom,
 				bottom = top + this.options.barHeight,
 				width = width || this.options.lineWidth;
@@ -123,11 +118,9 @@
 			this.context.restore();
 		},
 		drawText: function(text,x,y,textAlign){
-			//console.log("drawText | text: %s, x: %d, y: %s, textAlign: %s",text, x, y, textAlign);
 			x = x || this.canvas.width/2;			
 			y = y || (this.options.paddingLeftRight + this.options.barHeight + this.options.codePadding);
 			textAlign = textAlign || 'center';
-			//console.log("y: %d",y);
 			textAlign = textAlign || "start";
 			this.context.save();
 			this.context.fillStyle = "black";
@@ -154,5 +147,5 @@
 		}
 		return format;
 	}	
+	
 })(jQuery);
-
