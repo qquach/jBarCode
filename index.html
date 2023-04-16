@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+  <script type="text/javascript" src="js/qrcode.js"></script>
+  <script type="text/javascript" src="js/jBarCode.js"></script>
+  <script type="text/javascript" src="plugins/code39.js"></script>
+  <script type="text/javascript" src="plugins/ean.js"></script>
+  <script type="text/javascript" src="plugins/code128.js"></script>
+  <script type="text/javascript" src="plugins/qrcodePlugin.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/db13862e39.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="p-4">
+  <div>
+    <h2>Barcode generator</h2>
+    <div class="row my-4">
+      <div class="form-group col-4">
+        <input id="inputCode" name="inputCode" placeholder="Enter the string to encode" class="form-control"
+          value="123456789999" onchange="updateTable(this.id, 'codesTable')" />
+      </div>
+      <div class="form-group col">
+        <button name="encode" type="button" class="btn btn-primary"
+          onclick="updateTable('inputCode', 'codesTable')">Encode All</button>
+      </div>
+    </div>
+
+    <table id="codesTable" class="table table-bordered table-striped">
+      <thead class="bg-dark text-light">
+        <tr>
+          <th scope="col">Type</th>
+          <th scope="col">Code</th>
+          <th scope="col">Image</th>
+          <th scope="col">Note</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr hidden id="rowTemplate">
+          <td class="codeTitle">Code128</td>
+          <td class="codeValue">Wiki12345678pedia</td>
+          <td id="code128" class="codeType"></td>
+          <td class="codeDesc">Code 128 generate compress width digit in the middle</td>
+          <td class="actionsCol text-center">
+            <button type="button" title="download" class="download btn btn-sm btn-primary logout"
+              onclick="downloadCanvas(this)">
+              <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <script type="text/javascript">
+
+      const types = [
+        {
+          id: "upc",
+          title: "UPC",
+          desc: "UPC generation",
+          testValue: "123456789999"
+        },
+        {
+          id: "qrcode",
+          title: "Qr Code",
+          desc: "Qr generation",
+          testValue: "https://github.com/qquach"
+        },
+        {
+          id: "ean8",
+          title: "EAN-8",
+          desc: "EAN-8 generation",
+          testValue: "96385074"
+        },
+        {
+          id: "ean13",
+          title: "EAN-13",
+          desc: "EAN-13 generation",
+          testValue: "5901234123457"
+        },
+        {
+          id: "code39",
+          title: "Code39",
+          desc: "Code39 generation",
+          testValue: "123W1KIP3DIA456"
+        },
+        {
+          id: "code128",
+          title: "Code128",
+          desc: "Code128 generation",
+          testValue: "Wikipedia"
+        },
+        {
+          id: "code128",
+          title: "Code128 Prefixed",
+          desc: "Prefixed Code128 generation",
+          testValue: "1234Wikipedia"
+        },
+        {
+          id: "code128",
+          title: "Code128 Middled",
+          desc: "Middled Code128 generation",
+          testValue: "Wiki1234567pedia"
+        },
+        {
+          id: "code128",
+          title: "Code128 Suffixed",
+          desc: "Suffixed Code128 generation",
+          testValue: "Wikipedia1234"
+        },
+      ];
+
+      function getRowCodeTypeEl(row) {
+        return row.querySelector("td.codeType");
+      }
+
+      function getRowCodeValueEl(row) {
+        return row.querySelector("td.codeValue");
+      }
+
+      function getRowCodeTitleEl(row) {
+        return row.querySelector("td.codeTitle");
+      }
+
+      function getRowCodeDescriptionEl(row) {
+        return row.querySelector("td.codeDesc");
+      }
+
+      function getRowCodeCanvasEl(row) {
+        return getRowCodeTypeEl(row).querySelector("canvas");
+      }
+
+      function getRowCodeDownloadEl(row) {
+        return row.querySelector("button.download");
+      }
+
+      function getRowInterestEl(row) {
+        const type = getRowCodeTypeEl(row);
+        const value = getRowCodeValueEl(row);
+        const title = getRowCodeTitleEl(row);
+        const desc = getRowCodeDescriptionEl(row);
+        const canvas = getRowCodeCanvasEl(row);
+        const downloadBtn = getRowCodeDownloadEl(row);
+        const filename = `${type.id}_${value.innerText}.png`;
+
+        return {
+          type: type,
+          value: value,
+          title: title,
+          desc: desc,
+          canvas: canvas,
+          filename: filename,
+          downloadBtn: downloadBtn
+        }
+      }
+
+      function downloadCanvas(downloadBtn) {
+        const row = downloadBtn.closest("tr");
+        const { type, value, canvas, filename } = getRowInterestEl(row);
+
+        const link = document.createElement('a');
+        link.download = filename;
+        link.href = canvas.toDataURL();
+        link.click();
+      }
+
+      function createTable(inputId, tableId) {
+        const templateRow = document.getElementById("rowTemplate");
+        const tbody = templateRow.closest("tbody");
+
+
+        types.forEach(t => {
+          const newRow = templateRow.cloneNode(true);
+          const { type, value, title, canvas, desc } = getRowInterestEl(newRow);
+
+          title.innerText = t.title;
+          value.innerText = t.testValue;
+          type.id = t.id;
+          desc.innerText = t.desc;
+
+          tbody.append(newRow);
+          $(type).jBarCode(t.testValue, t.id);
+          newRow.removeAttribute('id');
+          newRow.hidden = false;
+        });
+      }
+
+      function updateTable(inputId, tableId) {
+        const table = document.getElementById(tableId);
+        const rows = table.querySelectorAll("tbody tr");
+        const codeValue = document.getElementById(inputId).value;
+
+        rows.forEach(row => {
+          const { type, value, canvas } = getRowInterestEl(row);
+          canvas?.remove();
+
+          $(type).jBarCode(codeValue, type.id);
+          value.innerText = codeValue;
+        });
+      }
+
+      $(function () {
+        createTable("inputCode", 'codesTable');
+      });
+    </script>
+</body>
+
+</html>

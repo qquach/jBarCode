@@ -1,5 +1,5 @@
 /**
-* Copyright © Quoc Quach 2013-2014
+* Copyright ï¿½ Quoc Quach 2013-2014
 * Author: Quoc Quach
 * Email: quoc_cooc@yahoo.com
 * Released under the MIT license
@@ -33,7 +33,6 @@
 		 * Validate data before rendering. It call before object created
 		 */
 		validate: function(code){
-			console.log("code: %s",code);
 			return !code.match(/[^0-9A-Z-\. \*$\/\+%]/);
 		},
 		/**

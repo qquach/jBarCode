@@ -1,5 +1,5 @@
 /**
-* Copyright © Quoc Quach 2013-2014
+* Copyright ï¿½ Quoc Quach 2013-2014
 * Author: Quoc Quach
 * Email: quoc_cooc@yahoo.com
 * Released under the MIT license

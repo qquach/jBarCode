@@ -1,5 +1,5 @@
 /**
-* Copyright © Quoc Quach 2013-2014
+* Copyright ï¿½ Quoc Quach 2013-2014
 * Author: Quoc Quach
 * Email: quoc_cooc@yahoo.com
 * Released under the MIT license
@@ -81,7 +81,6 @@
 					continue_code(output,99);
 				}					
 				while (pair = inputCode.match(/^\d{2}/)) {
-					console.log("inputCode match double digit infront: %s",inputCode);
 					inputCode = jump_code(output,inputCode,pair);				
 				}
 				continue_code(output,100);
@@ -95,7 +94,6 @@
 			}	
 
 			while ((index = inputCode.search(/\B\d{6,}/)) != -1) {// Check for middle range of 6+ num
-				console.log("Check for middle range of 6+ num: %s, index: %d", inputCode, index);
 				for(var i = 0; i<index; i++){
 					inputCode = walk_code(output, inputCode);					
 				}
@@ -109,7 +107,6 @@
 			if (flag == 1) continue;	
 			
 			if ((index = inputCode.search(/\d{4,}$/)) != -1 ) {// Check for 4+ end
-				console.log("match 4 more digits at the end: %s, %d", inputCode, index);
 				for(var i = 0; i<index; i++){
 					inputCode = walk_code(output, inputCode);					
 				}
@@ -120,7 +117,6 @@
 				
 				continue_code(output,99)
 				while (pair = inputCode.match(/^\d{2}/)) {			
-					console.log("last even digit: %s", pair);
 					inputCode = jump_code(output,inputCode,pair);
 				}
 				//should be all finish so just return;
@@ -128,12 +124,10 @@
 			}// done with check at end
 			
 			//add code one by one.
-			console.log("get here");
 			inputCode = walk_code(output, inputCode);			
 		}
 		// Check Sum Code
 		codes = CODE_128[checkSum % 103] + '';
-		console.log("checkSum: %d",checkSum%103);
 		output.push(codes);
 		// draw stop code
 		codes = CODE_128[106]+'11';
